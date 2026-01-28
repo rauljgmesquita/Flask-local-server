@@ -1,0 +1,7 @@
+flask
+sqlite3
+datetime
+os
+werkzeug.utils
+hashlib
+shutils
