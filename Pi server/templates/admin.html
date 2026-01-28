@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            display: flex;
+            flex-direction: column; /* Allows vertical stacking */
+            align-items: center;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        .login-container {
+            background: #ffffff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 2rem; /* Space between the two boxes */
+        }
+
+        .login-container h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .login-btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* List Styling */
+        .user-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .user-item {
+            background: #f8f9fa;
+            margin-bottom: 0.5rem;
+            padding: 0.75rem;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 4px solid #007bff;
+        }
+
+        .edit-link {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .system-tag {
+            color: #6c757d;
+            font-size: 0.8rem;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <h2>Add New User</h2>
+        <form action="/admin" method="POST" autocomplete="off">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="Enter the username" required autocomplete="off">
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter the password" required autocomplete="new-password">
+            </div>
+
+            <div class="form-group">
+                <label for="confirm_password">Confirm Password</label>
+                <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm the password" required autocomplete="new-password">
+            </div>
+
+            <button type="submit" class="login-btn">Create User</button>
+        </form>
+    </div>
+
+    <div class="login-container">
+        <h2>Registered Users</h2>
+        <ul class="user-list">
+            {% for user in users %}
+            <li class="user-item">
+                <span>{{ user }}</span>
+                
+                {% if user != "Admin" %}
+                    <a href="/admin/edit/{{ user }}" class="edit-link">Edit / Delete</a>
+                {% else %}
+                    <span class="system-tag">System Admin</span>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+        <div style="text-align: center; margin-top: 15px;">
+            <a href="/logout" style="color: #dc3545; text-decoration: none; font-size: 0.85rem;">Logout</a>
+        </div>
+    </div>
+    <div class="login-container" style="max-width: 600px;"> <h2>Recent Activity (Logins)</h2>
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left;">
+            <thead>
+                <tr style="border-bottom: 2px solid #eee;">
+                    <th style="padding: 10px;">User</th>
+                    <th style="padding: 10px;">Action</th>
+                    <th style="padding: 10px;">Timestamp</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                <tr style="border-bottom: 1px solid #f0f0f0;">
+                    <td style="padding: 10px;">{{ log[0] }}</td>
+                    <td style="padding: 10px;">
+                        <span style="padding: 2px 6px; border-radius: 4px; background: #e3f2fd; color: #007bff;">
+                            {{ log[1] }}
+                        </span>
+                    </td>
+                    <td style="padding: 10px; color: #666;">{{ log[2] }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="3" style="text-align: center; padding: 20px; color: #999;">No logs found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>
