@@ -1,4 +1,3 @@
-import os
 import shutil
 from werkzeug.utils import secure_filename
 from flask import Flask, render_template, request, session, redirect, url_for, send_from_directory
